@@ -9,6 +9,7 @@ import {
 import { Loader, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+
 const Explore = () => {
   const { ref, inView } = useInView();
   const { data: posts, fetchNextPage, hasNextPage } = useGetPosts();
@@ -67,7 +68,7 @@ const Explore = () => {
       <div className="flex flex-wrap gap-9 w-full max-w-5xl">
         {shouldshowSearchResults ? (
           <SearchResults
-            isSearchedFetching={isSearchFetching}
+            isSearchFetching={isSearchFetching}
             searchedPosts={searchedPosts}
           />
         ) : shouldShowPosts ? (
@@ -80,7 +81,7 @@ const Explore = () => {
       </div>
       {hasNextPage && !searchValue && (
         <div ref={ref} className="mt-10">
-          <Loader />{" "}
+          <Loader />
         </div>
       )}
     </div>
