@@ -1,5 +1,9 @@
 import PostCard from "@/components/shared/PostCard";
-import { useGetRecentPosts } from "@/lib/react-query/queriesAndMutation";
+import UserCard from "@/components/shared/UserCard";
+import {
+  useGetRecentPosts,
+  useGetUsers,
+} from "@/lib/react-query/queriesAndMutation";
 import { Models } from "appwrite";
 import { Loader } from "lucide-react";
 
@@ -9,7 +13,14 @@ const Home = () => {
     isPending: isPostLoading,
     isError: isErrorPosts,
   } = useGetRecentPosts();
-  if (isErrorPosts) {
+
+  const {
+    data: creators,
+    isPending: isUserLoading,
+    isError: isErrorCreators,
+  } = useGetUsers(10);
+
+  if (isErrorPosts || isErrorCreators) {
     return (
       <div className="flex flex-1">
         <div className="home-container">
@@ -36,6 +47,20 @@ const Home = () => {
             </ul>
           )}
         </div>
+      </div>
+      <div className="home-creators">
+        <h2 className="h3-bold text-light-1">Top Creators</h2>
+        {isUserLoading && !creators ? (
+          <Loader />
+        ) : (
+          <ul className="grid 2xl:grid-cols-2 gap-6">
+            {creators?.documents.map((creators) => (
+              <li key={creators?.id}>
+                <UserCard user={creators} />
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
