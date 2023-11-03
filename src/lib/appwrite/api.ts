@@ -71,6 +71,7 @@ export async function getCurrentUser() {
     );
 
     if (!currentUser) throw Error;
+
     return currentUser.documents[0];
   } catch (error) {
     console.log(error);
@@ -229,6 +230,7 @@ export async function deleteSavePost(savedRecordId: string) {
     console;
   }
 }
+
 export async function getPostById(postId: string) {
   try {
     const post = await databases.getDocument(
@@ -364,11 +366,3 @@ export async function getInfiniteUsers({ pageParam }: { pageParam: number }) {
     console.log(error);
   }
 }
-// export type Users = {
-//   documents: User[];
-// };
-// export type User = {
-//   name: string;
-//   username: string;
-//   accountid: string;
-// };

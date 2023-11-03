@@ -23,7 +23,7 @@ function AllUsers() {
     toast({ title: "Something went wrong" });
     return;
   }
-  console.log("Creators", creators);
+
   return (
     <div className="common-container">
       <div className="user-container">

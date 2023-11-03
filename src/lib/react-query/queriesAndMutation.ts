@@ -210,3 +210,10 @@ export const useGetUsers = () => {
     initialPageParam: null,
   });
 };
+
+export const useGetSavedPosts = () => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_SAVED_POSTS],
+    queryFn: getCurrentUser,
+  });
+};

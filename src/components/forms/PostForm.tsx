@@ -17,7 +17,7 @@ import { PostValidation } from "@/lib/validation";
 import { Models } from "appwrite";
 import { useUserContext } from "@/context/AuthContext";
 import { useToast } from "../ui/use-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   useCreatePost,
   useUpdatePost,
@@ -147,7 +147,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
         />
         <div className="flex gap-4 items-center justify-end">
           <Button type="button" className="shad-button_dark_4">
-            Cancel
+            <Link to={"/"}>Cancel</Link>
           </Button>
           <Button
             type="submit"
