@@ -6,8 +6,11 @@ import {
 } from "@/lib/react-query/queriesAndMutation";
 import { Models } from "appwrite";
 import { Loader } from "lucide-react";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 
 const Home = () => {
+  const { ref, inView } = useInView();
   const {
     data: posts,
     isPending: isPostLoading,
@@ -15,12 +18,18 @@ const Home = () => {
   } = useGetRecentPosts();
 
   const {
-    data: creators,
+    data: users,
+    fetchNextPage,
+    hasNextPage,
     isPending: isUserLoading,
-    isError: isErrorCreators,
-  } = useGetUsers(10);
+  } = useGetUsers();
 
-  if (isErrorPosts || isErrorCreators) {
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
+  if (isErrorPosts) {
     return (
       <div className="flex flex-1">
         <div className="home-container">
@@ -32,6 +41,7 @@ const Home = () => {
       </div>
     );
   }
+
   return (
     <div className="flex flex-1">
       <div className="home-container">
@@ -50,16 +60,25 @@ const Home = () => {
       </div>
       <div className="home-creators">
         <h2 className="h3-bold text-light-1">Top Creators</h2>
-        {isUserLoading && !creators ? (
+        {isUserLoading && !users ? (
           <Loader />
         ) : (
           <ul className="grid 2xl:grid-cols-2 gap-6">
-            {creators?.documents.map((creators) => (
-              <li key={creators?.id}>
-                <UserCard user={creators} />
-              </li>
-            ))}
+            {users?.pages.map((page) => {
+              return page.documents.map((users) => {
+                return (
+                  <li key={users.id}>
+                    <UserCard user={users} />
+                  </li>
+                );
+              });
+            })}
           </ul>
+        )}
+        {hasNextPage && (
+          <div ref={ref} className="mt-10">
+            <Loader />
+          </div>
         )}
       </div>
     </div>

@@ -344,3 +344,31 @@ export async function getUsers(limit?: number) {
     console.log(error);
   }
 }
+
+export async function getInfiniteUsers({ pageParam }: { pageParam: number }) {
+  console.log("I WAS CALL");
+  const queries = [Query.limit(5)];
+  if (pageParam) {
+    queries.push(Query.cursorAfter(pageParam.toString()));
+  }
+  try {
+    const user = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      queries
+    );
+    if (!user) throw Error;
+
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
+}
+// export type Users = {
+//   documents: User[];
+// };
+// export type User = {
+//   name: string;
+//   username: string;
+//   accountid: string;
+// };
